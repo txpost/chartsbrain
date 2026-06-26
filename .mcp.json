@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "chartsdb": {
+      "command": "node",
+      "args": ["./mcp/server.mjs"],
+      "env": {
+        "CHARTSDB_API_URL": "https://chartsdb.com",
+        "CHARTSDB_API_KEY": "${CHARTSDB_API_KEY}"
+      }
+    }
+  }
+}
