@@ -16,7 +16,7 @@ ChartsBrain is a small, cloneable kit — not an app. It's:
 
 - **A Claude Code skill** (`chart-ingest`) — the workflow that reads a chart screenshot, extracts the descriptive facts (ticker, timeframe, date span, what's drawn), proposes a pattern classification, and — after you confirm — files the entry.
 - **A chart-pattern glossary** (`knowledge/glossary.md`) — the shared classification vocabulary. What an Episodic Pivot is, what a VCP is, what a cup-with-handle is. The skill classifies *against* this; you extend it as you learn new setups.
-- **A hosted MCP connection** — the bridge that writes your entry to chartsdb.com (a database row + hosted image variants), authenticated by *your own* API key. It's hosted at `chartsdb.com/mcp`, so there's nothing to install or run — you just connect to it.
+- **A hosted MCP connection** — the bridge that writes your entry to chartsdb.com (a database row + hosted image variants), authenticated by *your own* API key. It's hosted at `chartsdb.com/mcp`, so there's nothing to install or run — you just connect to it. (It's a standard remote MCP endpoint, so any MCP-capable client works — these docs use Claude Code, but Codex, Claude Desktop, etc. connect to the same URL with your key.)
 
 **The split that makes it work:** the database stays *dumb* — every entry just *describes* a chart and tags it. The *meaning* of those tags lives in the glossary. The AI does the reading and the busywork; **you** make the classification call and own what you contribute.
 
