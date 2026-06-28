@@ -1,69 +1,55 @@
 # Setup
 
-Full setup for connecting ChartsBrain to chartsdb.com. The short version is in the [README](README.md); this is the exact steps.
+Connecting ChartsBrain to chartsdb.com. It's short — the MCP server is **hosted**, so there's nothing to install or run locally.
 
-## 1. Install the MCP server's dependencies
-
-```sh
-cd mcp && npm install && cd ..
-```
-
-## 2. Get your personal API key
+## 1. Get your personal API key
 
 1. Sign in at [chartsdb.com](https://chartsdb.com).
 2. **Settings → API keys** (`/settings/keys`).
 3. **Create key** → label it (e.g. "ChartsBrain") → copy it. It's shown **once** — store it like a password.
 
-## 3. Export your key
+## 2. Export your key
 
-Put these in your shell profile (`~/.zshrc` / `~/.bashrc`) so the MCP server picks them up:
+Put this in your shell profile (`~/.zshrc` / `~/.bashrc`) so Claude Code can read it:
 
 ```sh
 export CHARTSDB_API_KEY="cdb_your_key_here"
-export CHARTSDB_API_URL="https://chartsdb.com"
 ```
 
 Reload (`source ~/.zshrc`) or open a new terminal.
 
-## 4. Register the MCP server in Claude Code
+## 3. Connect
 
-A `.mcp.json` ships with this repo (committed config, preferred — it travels with the clone):
+A `.mcp.json` ships with this repo, pointing at the hosted endpoint:
 
 ```json
 {
   "mcpServers": {
     "chartsdb": {
-      "command": "node",
-      "args": ["./mcp/server.mjs"],
-      "env": {
-        "CHARTSDB_API_URL": "https://chartsdb.com",
-        "CHARTSDB_API_KEY": "${CHARTSDB_API_KEY}"
-      }
+      "type": "http",
+      "url": "https://chartsdb.com/mcp",
+      "headers": { "Authorization": "Bearer ${CHARTSDB_API_KEY}" }
     }
   }
 }
 ```
 
-When you open Claude Code in this directory, it'll prompt to trust the project's MCP server — accept it. (The `${CHARTSDB_API_KEY}` is read from your environment, so your key never lives in the repo.)
+Open Claude Code in this directory — it'll prompt to trust the project's MCP server. Accept it. Your key is read from the environment, so it never lives in the repo.
 
-If the committed config doesn't pick up, register it per-machine instead:
+That's it. No `npm install`, no local server process — chartsdb.com hosts the MCP endpoint; you just connect to it with your key.
 
-```sh
-claude mcp add chartsdb -- node ./mcp/server.mjs
-```
+## 4. Verify
 
-## 5. Verify
-
-Start a Claude Code session in this directory. The `add_chart` tool loads at session start. To confirm it's connected:
+Start a Claude Code session here and run:
 
 ```
 /chart-ingest ~/Downloads/some-chart.png
 ```
 
-If the skill says the MCP server isn't connected, check: (a) `npm install` ran in `mcp/`, (b) `CHARTSDB_API_KEY` is exported in the *same* environment Claude Code runs in, (c) you accepted the trust prompt. Restart the session after fixing — the MCP server reads its env at session start.
+If the skill says the MCP server isn't connected, check: (a) `CHARTSDB_API_KEY` is exported in the same environment Claude Code runs in, (b) you accepted the trust prompt, (c) you're online. Restart the session after fixing — MCP servers connect at session start.
 
 ## Notes
 
 - **The key is per-user.** Charts you ingest are owned by *you* and attributed to you in the shared corpus.
 - **Treat the key like a password.** Anyone with it can write to your collection. Revoke + recreate at `/settings/keys` if it leaks.
-- **Per-machine setup repeats steps 1, 3, 4** (install, export key, trust prompt) on each computer you use.
+- **Per-machine:** repeat steps 2–3 (export the key, accept the trust prompt) on each computer you use.

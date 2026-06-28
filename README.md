@@ -16,7 +16,7 @@ ChartsBrain is a small, cloneable kit — not an app. It's:
 
 - **A Claude Code skill** (`chart-ingest`) — the workflow that reads a chart screenshot, extracts the descriptive facts (ticker, timeframe, date span, what's drawn), proposes a pattern classification, and — after you confirm — files the entry.
 - **A chart-pattern glossary** (`knowledge/glossary.md`) — the shared classification vocabulary. What an Episodic Pivot is, what a VCP is, what a cup-with-handle is. The skill classifies *against* this; you extend it as you learn new setups.
-- **A thin MCP server** (lives in the chartsdb repo, `mcp/`) — the bridge that actually writes your entry to chartsdb.com (a database row + hosted image variants), authenticated by *your own* API key.
+- **A hosted MCP connection** — the bridge that writes your entry to chartsdb.com (a database row + hosted image variants), authenticated by *your own* API key. It's hosted at `chartsdb.com/mcp`, so there's nothing to install or run — you just connect to it.
 
 **The split that makes it work:** the database stays *dumb* — every entry just *describes* a chart and tags it. The *meaning* of those tags lives in the glossary. The AI does the reading and the busywork; **you** make the classification call and own what you contribute.
 
@@ -49,17 +49,15 @@ cd chartsbrain
 
 This key authenticates your contributions, so the charts you add are owned and attributed to you.
 
-### 3. Connect the MCP server
+### 3. Connect (nothing to install)
 
-ChartsBrain writes to chartsdb via the chartsdb MCP server. Set it up with your key:
+ChartsBrain writes to chartsdb via a **hosted** MCP endpoint — no local server to install or run. Just export your key:
 
 ```bash
-# Set your key (the one you just created)
 export CHARTSDB_API_KEY="cdb_your_key_here"
-export CHARTSDB_API_URL="https://chartsdb.com"
 ```
 
-Then register the MCP server in Claude Code (see `SETUP.md` for the exact `.mcp.json` config and `npm install` step). The server loads at session start; once it's connected, the `add_chart` tool is available to the skill.
+A `.mcp.json` ships with this repo pointing at `https://chartsdb.com/mcp`. Open Claude Code in this directory and accept the trust prompt — your key (read from the environment) authenticates you, and the chart tools become available to the skill. See `SETUP.md` for details.
 
 ### 4. Ingest your first chart
 
