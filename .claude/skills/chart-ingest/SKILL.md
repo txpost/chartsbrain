@@ -129,7 +129,7 @@ add_chart({
   indicators: ["volume", "annotation-arrow"],
   tags: ["bullish","case-study","catalyst-earnings","chart-pattern","daily",
          "episodic-pivot","gap-up","traderlion","volume-surge"],
-  image_path: "/Users/txpost/Downloads/<source>.jpeg",   // app converts → R2 WebP
+  image_path: "~/Downloads/<source>.jpeg",   // app converts → R2 WebP
   body: `# SMCI — Episodic Pivot — 2024
 
 ## Summary
