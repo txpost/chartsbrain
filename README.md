@@ -1,31 +1,32 @@
 # ChartsBrain
 
-**An AI-assisted kit for studying charts and contributing them to [chartsdb.com](https://chartsdb.com) — the largest charts database in the world.**
+**A starter kit for a trading second brain — and a way to help build [chartsdb.com](https://chartsdb.com), the largest charts database in the world.**
 
-The way you learn to trade is by studying thousands of charts until the setups are automatic. ChartsBrain is the tooling that makes that a *process* instead of a pile of screenshots: you point an AI agent at a chart, it reads the chart, classifies the pattern against a shared glossary, and files a clean, described entry into the database — owned by you, and part of a growing shared corpus everyone can study.
+The way you learn to trade is by studying thousands of charts until the setups are automatic. ChartsBrain is a jump-off point for building your own trading knowledge base around that work: clone it, and you get an AI-assisted chart-study workflow plus a glossary of setups — both **yours to grow in whatever direction you please.** You point an AI agent at a chart, it reads the chart, proposes a classification against *your* glossary, and files a clean, described entry into chartsdb — owned by you, and (if you want) part of the growing shared corpus everyone can study.
 
 > Find a setup that works. Collect and study thousands of charts until you master it — to the point of being the best in the world at that one setup. Studying thousands of charts *is* the work.
 
-ChartsBrain is how you do that work, and how you help build the database while you do it.
+ChartsBrain is how you do that work, build your own second brain around it, and help build the database while you do.
 
 ---
 
 ## What this is
 
-ChartsBrain is a small, cloneable kit — not an app. It's:
+ChartsBrain is a small, cloneable kit — not an app — meant to be the **seed of your own trading second brain.** It's:
 
 - **A Claude Code skill** (`chart-ingest`) — the workflow that reads a chart screenshot, extracts the descriptive facts (ticker, timeframe, date span, what's drawn), proposes a pattern classification, and — after you confirm — files the entry.
-- **A chart-pattern glossary** (`knowledge/glossary.md`) — the shared classification vocabulary. What an Episodic Pivot is, what a VCP is, what a cup-with-handle is. The skill classifies *against* this; you extend it as you learn new setups.
+- **A starter glossary** (`knowledge/glossary.md`) — a seed vocabulary of setups (Episodic Pivot, VCP, cup-with-handle, …) drawn from the greats. **This is yours.** Use it as-is, extend it, rewrite it, or ignore it and build your own from scratch — it's a starting point, not an authority. The skill classifies against *whatever glossary you've got*, and flags new patterns for *you* to add as you learn them.
 - **A hosted MCP connection** — the bridge that writes your entry to chartsdb.com (a database row + hosted image variants), authenticated by *your own* API key. It's hosted at `chartsdb.com/mcp`, so there's nothing to install or run — you just connect to it. (It's a standard remote MCP endpoint, so any MCP-capable client works — these docs use Claude Code, but Codex, Claude Desktop, etc. connect to the same URL with your key.)
 
-**The split that makes it work:** the database stays *dumb* — every entry just *describes* a chart and tags it. The *meaning* of those tags lives in the glossary. The AI does the reading and the busywork; **you** make the classification call and own what you contribute.
+**The split that makes it work:** the database stays *dumb* — every entry just *describes* a chart and tags it. The *meaning* of those tags lives in **your** glossary. The AI does the reading and the busywork; **you** make the classification call, grow your own vocabulary, and own what you contribute.
 
 ---
 
 ## What you get out of it
 
+- **A second brain you own.** The skill and glossary are a starting point — grow them however you trade. Already running your own notes/knowledge setup? Drop ChartsBrain in alongside it (see [Using it in an existing project](#using-it-in-an-existing-project)).
 - **Your own studied collection.** Every chart you ingest is yours, searchable by pattern, timeframe, ticker. Build your personal model book.
-- **You're part of the big thing.** Your charts contribute to the shared corpus at chartsdb.com — the goal is the largest, best collection of studied charts anywhere. The more people doing the work, the better the database gets for everyone.
+- **Part of the big thing (if you want).** Your charts can contribute to the shared corpus at chartsdb.com — the goal is the largest, best collection of studied charts anywhere. The more people doing the work, the better the database gets for everyone.
 - **A repeatable process.** The loop: *collect charts → AI ingests them → study them → apply what you learn to your own charts → ingest those for feedback → repeat.* ChartsBrain is the engine; what you do with the database (model books, breakdowns, conviction) comes out the other side.
 
 ---
@@ -77,15 +78,27 @@ That's the loop. Do it a thousand times.
 
 ---
 
-## The roadmap (for contributors)
+## Using it in an existing project
 
-ChartsBrain is young and built in the open. Here's where it's going — and where you can help:
+Already have your own trading notes / knowledge base (a tbrain-style "second brain")? You don't need to clone ChartsBrain as a separate repo — just drop the pieces into your existing project:
 
-- **Now:** ingest charts via the skill; build your collection; the glossary grows as the community finds new setups.
-- **Next:** richer classification (multi-timeframe, composite setups), a public glossary anyone can propose additions to, contributor leaderboards / attribution on the shared corpus.
+1. Copy the skill into your project: `.claude/skills/chart-ingest/`.
+2. Copy `knowledge/glossary.md` somewhere in your project (or point the skill at a glossary you already keep). The skill reads whatever glossary you give it — your existing pattern notes work fine.
+3. Add the `chartsdb` MCP server to your project's `.mcp.json` (copy the block from this repo's `.mcp.json`) and export your `CHARTSDB_API_KEY`.
+
+Because the MCP endpoint is hosted, there's nothing else to install. Now `/chart-ingest` works inside *your* brain, classifying against *your* glossary, contributing to chartsdb.
+
+---
+
+## The roadmap
+
+ChartsBrain is young and built in the open. Where it's going:
+
+- **Now:** ingest charts via the skill; build your collection and your own glossary; contribute to the shared corpus.
+- **Next:** richer classification (multi-timeframe, composite setups); optional tag-normalization so personal vocabularies still query coherently against the shared corpus.
 - **Later:** derived outputs from the database — auto-generated model books, a content engine, pattern statistics across the whole corpus.
 
-If you ingest a chart that fits no glossary pattern, the skill flags it — propose a definition and it can be added. **The glossary is the curriculum, and it's collaborative.**
+If you ingest a chart that fits no glossary pattern, the skill flags it — and you add the definition to **your** glossary. Your glossary is your curriculum; grow it as you learn.
 
 ---
 
