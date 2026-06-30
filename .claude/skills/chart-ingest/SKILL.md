@@ -1,17 +1,18 @@
 ---
 name: chart-ingest
-version: 2.1.0
+version: 2.2.0
 description: |
   Ingest a chart you found into the chartsdb collection (the live app — Neon DB
   + R2 images). Reads the chart image, extracts the descriptive facts (ticker,
   timeframe, date range, what's drawn on it), proposes a pattern classification
   by reading the chart-pattern glossary (knowledge/glossary.md), then — after you
-  confirm — calls the `add_chart` MCP tool, which lands the entry live on
-  chartsdb.com (no git file, no local PNG) owned by you (via your personal API
-  key). The collection stays "dumb" (descriptive frontmatter + free tags); the
-  pattern *meaning* it classifies against lives in the glossary. Use when you
-  paste or point at a chart screenshot you want kept as a corpus entry and may
-  want help writing up.
+  confirm — uploads the original image (POST /api/upload-url → PUT to storage)
+  and calls the `add_chart` MCP tool with its image_url, which lands the entry
+  live on chartsdb.com (no git file, no local PNG) owned by you (via your
+  personal API key). The collection stays "dumb" (descriptive frontmatter + free
+  tags); the pattern *meaning* it classifies against lives in the glossary. Use
+  when you paste or point at a chart screenshot you want kept as a corpus entry
+  and may want help writing up.
 triggers:
   - "ingest this chart"
   - "add this chart to the corpus"
@@ -45,7 +46,7 @@ This skill guarantees:
 - **Descriptive facts are extracted from the image** (ticker, timeframe, price range, date span, indicators drawn, annotations present) by reading it visually — not invented. If a fact can't be read off the chart, the skill asks rather than guesses.
 - **Pattern classification is proposed, not imposed.** The skill reads the glossary, proposes the matching pattern tag(s) with a one-line reason each, and the user confirms/edits/adds before anything is written. The skill never silently applies a classification.
 - **Tags use existing corpus vocabulary** where it fits. Before proposing tags, the skill scans the glossary's defined terms so suggestions align (no `head-shoulders` when the corpus says `head-and-shoulders`).
-- The user's original image (Downloads/wherever) is **left intact** — the skill hands `add_chart` a path or base64 copy; it never moves or mutates the source. The app generates R2 WebP variants from whatever it's given (JPEG/PNG both fine — the app converts), so no manual PNG conversion is needed on this path.
+- The user's original image (Downloads/wherever) is **left intact** — the skill uploads a copy of the original via the pre-signed URL and passes its `image_url` to `add_chart`; it never moves or mutates the source. The app generates R2 WebP variants from whatever it's given (JPEG/PNG both fine — the app converts), so no manual PNG conversion is needed; always send the highest-fidelity original (don't downscale).
 - `add_chart` is **idempotent on slug** — re-calling with the same slug updates the existing entry rather than duplicating. The skill still surfaces a likely-collision to the user before overwriting an existing entry's content.
 - The chart image is sent only to the chartsdb app (your own backend) — never to web tools, pastebins, PR descriptions, or other external services.
 - The skill does **not** require any git commit — the write is the MCP call; there is no file to commit. (Reporting the live URL is the close.)
@@ -62,7 +63,7 @@ If invoked bare (`/chart-ingest` with no chart), ask: *"Which chart? Paste the i
 
 ## Phases
 
-1. **Load the glossary + confirm the MCP tool is available.** Read `knowledge/glossary.md` into context — it's the classification vocabulary. Confirm the `add_chart` MCP tool is available (it's a deferred tool — load it via ToolSearch `select:mcp__chartsdb__add_chart`). If the tool isn't registered, stop and tell the user the chartsdb MCP server isn't connected (it loads at session start; see `../chartsdb/mcp/README.md`) — there is no file-write fallback anymore.
+1. **Load the glossary + confirm the MCP tool is available.** Read `knowledge/glossary.md` into context — it's the classification vocabulary. Confirm the `add_chart` MCP tool is available (it's a deferred tool — load it via ToolSearch `select:mcp__chartsdb__add_chart`). If the tool isn't registered, stop and tell the user the chartsdb MCP server isn't connected (it loads at session start; see `SETUP.md` for connecting it and exporting your `CHARTSDB_API_KEY`) — there is no file-write fallback.
 
 2. **Read the chart image.** Use the `Read` tool on the image. Extract, by looking at it:
    - **Ticker** — usually in the top-left chart title (e.g. "Super Micro Computer, Inc. · 1D · SMCI" → `SMCI`).
@@ -98,10 +99,13 @@ If invoked bare (`/chart-ingest` with no chart), ask: *"Which chart? Paste the i
      - **Environment-context sections** — `## Catalyst` (the concrete event(s) that drove the move — earnings beat, product launch, recall, guidance cut; dated and attributed), `## Market` (what the general market / sector was doing during the span — trend, a major bottom/top, the stock's relative strength-or-weakness vs. the index; approximate levels/percentages), `## Fundamentals` (revenue, earnings/EPS, subscriber/unit growth, the profit-or-loss arc — specific numbers by year/quarter, attributed). All three sit **after `## On this chart` and before `## Analysis`**, in that order. They give the reader the overall environment the chart formed in. **All optional** under the never-empty-heading rule — but optional ≠ "skip if the chart is silent." If the *image itself* doesn't surface a fact, **the agent's job is to go find it**: run a web search / deep-dive on the ticker + date range and fill the section from verifiable public sources. (This is the dumb-corpus / smart-agent split — the section is descriptive *corpus* content; the *research* to populate it is the agent's intelligence.) Discipline: state every researched fact as **observable, attributed, date-bounded** ("Q4 2009 revenue $444.5M, +24% YoY, per the 8-K"), never spun into a thesis or prediction — same rule as `## Outcome`. Mark anything you couldn't verify `[unverified]` rather than guessing. **Only the ticker + date range go to web tools — never the chart image** (the image goes only to chartsdb). Omit a section only if research genuinely turns up nothing.
      - Optional sections, **only if there's real content, in this order** (after the environment sections): `## Analysis` (the applied interpretive read through a named lens — stage analysis, VCP, a method — lens named in the first line, header kept generic `## Analysis`; **self-contained conversational prose that stands on its own, no wikilink dependence** — assume trader vocabulary, since public readers won't have the glossary and the entry must be legible alone), `## Outcome` (prose narration of *observed* price action, estimate-flagged if read off the chart), `## Notes` (your editorial commentary — you write it, the agent doesn't ghost-write), `## Related` (`[[wikilinks]]` to siblings). **Never leave an empty heading** — omit the section.
      - Do **not** ghost-write a trade thesis or fabricate an outcome — those are interpretive and don't belong in the dumb corpus. `## Outcome` is for *observed* price action only; if unknown, omit it. The `## Catalyst` / `## Market` / `## Fundamentals` sections are *factual* environment context, not thesis — keep them descriptive.
-   - **The image** (one of two arg forms): `image_path` (absolute path to the user's local file — preferred; the app reads JPEG or PNG and generates R2 WebP variants itself, so no manual conversion is needed) OR `image_base64` + `image_filename` (`<slug>.png`). Leave the user's original file intact.
-   - **Call `add_chart`** with all of the above. It POSTs to `chartsdb.com` (`POST /api/charts`, token-authed), writes the Neon row + R2 image variants, and returns the **live URL**. Idempotent on slug.
+   - **The image — upload it first, then pass a URL (the contributor path).** A real-sized chart screenshot's base64 (~200–330K chars) is too large to pass as an MCP tool argument over a remote connection, so `add_chart` takes an **`image_url`** and the server fetches the bytes itself. Get that URL by uploading the **original, full-resolution file** (never pre-convert or downscale — the app generates the WebP variants server-side):
+     1. **Request a pre-signed upload URL:** `POST /api/upload-url` (Bearer your personal API key) with `{ "contentType": "image/png", "filename": "<slug>.png" }`. It returns `{ putUrl, getUrl }`.
+     2. **PUT the raw image bytes** to `putUrl` with the matching `Content-Type` header (e.g. `curl -X PUT -H "content-type: image/png" --data-binary @<your-image> "<putUrl>"`). This uploads straight to storage — no size limit, nothing through the model.
+     3. **Call `add_chart`** with all the fields above plus **`image_url: <getUrl>`**. The server fetches the original from that URL and generates the R2 WebP variants. Leave your local file intact.
+   - **`add_chart`** POSTs to `chartsdb.com` (`POST /api/charts`, token-authed), writes the Neon row + R2 image variants, and returns the **live URL**. Idempotent on slug. (If you already host the image somewhere publicly fetchable, you can skip the upload step and pass that URL as `image_url` directly. The tiny-image-only `image_base64` form still exists but isn't worth using for a normal screenshot.)
 
-8. **Verify the write landed.** The tool's success response returns the live URL — that's the primary confirmation. Optionally confirm the entry is queryable / the R2 image serves (the app generates `thumb`/`reading`/`full` WebP variants; a quick `curl -sI <reading-url>` → `HTTP 200 image/webp` confirms the image pipeline ran). Do **not** look for a local file — there isn't one on this path. If `add_chart` returns an error (auth/token mismatch, app down), report it and stop; don't fall back to writing a file (the flat-file corpus is retired).
+8. **Verify the write landed.** `add_chart`'s success response returns the live URL — that's the primary confirmation. Optionally confirm the R2 image serves (the app generates `thumb`/`reading`/`full` WebP variants; a quick `curl -sI <reading-url>` → `HTTP 200 image/webp` confirms the image pipeline ran). Do **not** look for a local file — there isn't one on this path. If `add_chart` or the upload returns an error (auth/token mismatch, app down), report it and stop; don't fall back to writing a file (the corpus is DB-only). *Browser note:* a browser-based caller PUTting directly to storage needs the bucket's CORS to allow `PUT` from the app origin; a CLI/agent caller is unaffected.
 
 9. **Report.** One line:
    ```
@@ -129,7 +133,7 @@ add_chart({
   indicators: ["volume", "annotation-arrow"],
   tags: ["bullish","case-study","catalyst-earnings","chart-pattern","daily",
          "episodic-pivot","gap-up","traderlion","volume-surge"],
-  image_path: "~/Downloads/<source>.jpeg",   // app converts → R2 WebP
+  image_url: "<getUrl from POST /api/upload-url>",   // server fetches the original → R2 WebP
   body: `# SMCI — Episodic Pivot — 2024
 
 ## Summary
@@ -182,6 +186,6 @@ Classic earnings-catalyst Episodic Pivot in SMCI, 2024 — a high-volume gap-up 
 - **Tag drift.** Reuse the corpus's existing tag spelling (`head-and-shoulders`, not `h-and-s`; `episodic-pivot`, not `ep`). Scan the glossary before proposing.
 - **Writing a local file.** The flat-file corpus is retired (2026-06-17) — the DB is the sole source of truth. Never `cp`/`sips`/`Write` a `.md` or `.png` into `../chartsdb/charts/` (the directory is gone). The only write path is `add_chart`.
 - **Falling back to a file when `add_chart` fails.** If the MCP tool errors (token mismatch, app down), report it and stop — there is no file fallback. Fix the connection and retry.
-- **Manually converting the image.** The app generates R2 WebP variants from whatever it's handed (JPEG or PNG) — don't `sips` it to PNG first; just pass `image_path` to the original.
+- **Manually converting or downscaling the image.** The app generates R2 WebP variants from whatever it's handed (JPEG or PNG) — don't `sips`/downscale/re-encode it first; upload the **original, full-resolution** file. Pre-converting feeds the pipeline a degraded input and the "full" variant loses fidelity.
 - **Writing a local file instead of calling `add_chart`.** Chart entries live in the chartsdb app (Neon + R2), not on disk. The only local file this skill touches is the glossary — and only to *read* it (or, as a flagged follow-up, to add a new pattern definition).
 - **Sending the chart anywhere external.** The image goes only to your own chartsdb backend. No other web tools, PR descriptions, or pastebins.
