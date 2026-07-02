@@ -4,10 +4,6 @@
 
 The way you learn to trade is by studying thousands of charts until the setups are automatic. ChartsBrain is a jump-off point for building your own trading knowledge base around that work: clone it, and you get an AI-assisted chart-study workflow, a glossary of setups, and playbooks for hunting and grading them — all **yours to grow in whatever direction you please.** You point an AI agent at a chart, it reads the chart, proposes a classification against *your* glossary, and files a clean, described entry into your own chart database.
 
-> Find a setup that works. Collect and study thousands of charts until you master it — to the point of being the best in the world at that one setup. Studying thousands of charts *is* the work.
-
-ChartsBrain is how you do that work and build your own second brain around it.
-
 **About [chartsdb.com](https://chartsdb.com):** the public charts database is free to **read** — anyone can browse and study the charts. **Contributing** to the shared database is currently invite-only while it's being dogfooded: clone and use ChartsBrain freely for your own study, and if you'd like to contribute your charts to chartsdb.com, [reach out on X](https://twitter.com/chartsdb). This keeps the corpus curated and small on purpose for now.
 
 ---
