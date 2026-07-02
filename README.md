@@ -81,7 +81,7 @@ That's the loop. Do it a thousand times.
 
 ## Using it in an existing project
 
-Already have your own trading notes / knowledge base (a tbrain-style "second brain")? You don't need to clone ChartsBrain as a separate repo — just drop the pieces into your existing project:
+Already have your own trading notes / knowledge base (a gbrain-style "second brain")? You don't need to clone ChartsBrain as a separate repo — just drop the pieces into your existing project:
 
 1. Copy the skill into your project: `.claude/skills/chart-ingest/`.
 2. Copy `knowledge/glossary.md` somewhere in your project (or point the skill at a glossary you already keep). The skill reads whatever glossary you give it — your existing pattern notes work fine.
@@ -100,14 +100,6 @@ ChartsBrain is young and built in the open. Where it's going:
 - **Later:** derived outputs from the database — auto-generated model books, a content engine, pattern statistics across the whole corpus.
 
 If you ingest a chart that fits no glossary pattern, the skill flags it — and you add the definition to **your** glossary. Your glossary is your curriculum; grow it as you learn.
-
----
-
-## Philosophy
-
-Learning to trade is a daunting, lonely task with no clear curriculum. This is an attempt at one — tooling that removes the friction of studying charts, so you can do the real work.
-
-**Think setups, not stocks.** Master one setup deeply. Study the charts.
 
 ---
 
