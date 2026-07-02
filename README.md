@@ -1,6 +1,6 @@
 # ChartsBrain
 
-**A starter kit for a trading second brain — and a way to help build [chartsdb.com](https://chartsdb.com), the largest charts database in the world.**
+**A starter kit for a trading second brain — and a way to help build [chartsdb.com](https://chartsdb.com).**
 
 The way you learn to trade is by studying thousands of charts until the setups are automatic. ChartsBrain is a jump-off point for building your own trading knowledge base around that work: clone it, and you get an AI-assisted chart-study workflow plus a glossary of setups — both **yours to grow in whatever direction you please.** You point an AI agent at a chart, it reads the chart, proposes a classification against *your* glossary, and files a clean, described entry into chartsdb — owned by you, and (if you want) part of the growing shared corpus everyone can study.
 
