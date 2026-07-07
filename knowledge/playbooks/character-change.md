@@ -51,6 +51,19 @@ Keep it sparse. The best teaching charts have ~4–5 marks, not fifteen.
 > **Read this as a judge's bench notes, not a scorecard.** These are the criteria to *reason against* so grading is grounded and consistent — NOT boxes to tick. Judge the chart: note where a criterion is *partially* met, where a "failure" is actually instructive, and where the chart does something the criteria don't anticipate. **A chart can be excellent while missing a criterion, and weak while checking every box.** Two anchors:
 > - *Excellent-but-incomplete:* `2022-11-15-NVDA-W-character-change-trevor` — a real character change that RAN without ever offering the clean 10-week-respect entry. Marking that absence (not forcing a fake #3) is the *correct*, advanced read.
 > - *Checks-boxes-but-weak:* a stock extended vertically into its pivot (cf. VELO discussion) — every element "present," but buying it is a knife, not a setup.
+> - *Real-but-imperfect:* `2025-07-15-TER-W-character-change-trevor` — a character change that WORKED but on soft confirmation (adequate-not-loud reclaim volume, a contested "multiple tests" MA rather than a cleanly-capping one, a compressed fast-V base). One pass, two partials. Kept as the imperfect example to study, tagged `imperfect-setup`. The trend running does NOT retroactively make the pre-confirmation evidence clean.
+
+### Grade adversarially-first (the honesty protocol)
+
+**The default failure mode is grading toward a grade — hunting reasons the setup WORKS and confirming the strong criteria.** That flatters every chart, especially one whose trend already ran (hindsight makes soft evidence look strong). Grade the other direction:
+
+1. **Start by trying to DISQUALIFY it.** Assume it's flawed and hunt the failure modes *first* (soft/unremarkable volume, contested-not-capping MA, extended-into-the-pivot, compressed/parabolic base, liquidation-not-accumulation, relative weakness, faulty base). Only after the bear case is exhausted do you credit what's strong.
+2. **Give every criterion an explicit verdict: `pass` / `PARTIAL` / `fail`** — never a vague "present." A criterion is `PARTIAL` unless it clearly clears the strong-form bar (e.g. volume that's merely above-average is `PARTIAL`, not a `pass`; an MA that was chopped through is `PARTIAL`/`fail`, not a `pass`). When unsure between two levels, take the *lower* one.
+3. **Name the single weakest piece and the one determining read** — the thing that most decides whether it's real. If the honest tally is "one pass, two partials," say so plainly; don't average it up.
+4. **No overall letter/level until every criterion has its verdict.** The grade is the *sum of the honest per-criterion reads*, not a gestalt impression. A chart with two partials is a B-something, not an A- — even if it ran.
+5. **Ignore the outcome when grading the SETUP.** "It went up" grades the market's verdict, not your read at the pivot. A real-but-imperfect setup that worked is still imperfect (see the TER anchor) — grade the evidence that was visible *before* the move, and let the outcome inform the *lesson*, not the grade.
+
+The point is to learn to read *proper* setups AND to recognize honestly that they're often not perfect — an imperfect setup, named as such, is more valuable than a clean one graded generously. Being generous is the enemy of learning here.
 
 Criteria to weigh:
 
@@ -79,4 +92,4 @@ When you grade: name what's strong, what's partial, and the *one thing* that mos
 **With first Stage-2 base stacked:** `2012-11-15-NFLX-W-...`, `2023-01-15-BTCUSD-W-...` (repeating bases).
 **Schmidt's own (maturity spectrum):** `2024-10-17-APP-W-character-change-schmidt` (completed), `...PYPL...` (developing), `...PTON...` (very early).
 
-See also: [[glossary#character-change]] (definition), Nick Schmidt's “Character Change” writeup (nickschmidt.so) (deep method), [[buying-in-bases]] (the continuation partner).
+See also: [[glossary#character-change]] (definition), Nick Schmidt’s “Character Change” writeup (nickschmidt.so) (deep method), [[buying-in-bases]] (the continuation partner).

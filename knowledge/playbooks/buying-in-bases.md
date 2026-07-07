@@ -45,6 +45,18 @@ Dual-purpose by design:
 > - *Imperfect-but-tradeable:* a `buying-in-bases-imperfect` — the prior move was parabolic, or the base is long/loose — tradeable but lower-conviction; the annotation should *name what's not textbook*.
 > - *Clean-looking-but-stay-away:* a tidy base on a **relatively-weak** name (down far more than the market) is still a stay-away — the pattern is fine, the context isn't.
 
+### Grade adversarially-first (the honesty protocol)
+
+**The default failure mode is grading toward a grade — hunting reasons the base WORKS and confirming the strong criteria.** That flatters every chart, especially one whose breakout already ran. Grade the other direction:
+
+1. **Start by trying to DISQUALIFY it** — hunt the failure modes first (base loosening not tightening, volume *not* drying up / erratic, entry at the range top not on weakness, stop miles away, relative weakness, trend not actually established). Credit the strengths only after the bear case is exhausted.
+2. **Give every criterion an explicit verdict: `pass` / `PARTIAL` / `fail`** — never a vague "present." Unless a criterion clearly clears the strong-form bar it's `PARTIAL` (a base tightening on *okay* volume is `PARTIAL`, not a `pass`). When unsure between two levels, take the *lower*.
+3. **Name the single weakest piece and the one determining read.** If the honest tally is mostly partials, say so; don't average it up.
+4. **No overall conviction level until every criterion has its verdict** — the grade is the sum of the honest per-criterion reads, not a gestalt.
+5. **Ignore the outcome when grading the SETUP.** "The breakout ran" grades the market's verdict, not your read at the entry. An imperfect base that worked is still imperfect (tag `buying-in-bases-imperfect`) — grade the pre-breakout evidence, let the outcome inform the *lesson*.
+
+The point is to learn to read *proper* setups AND to recognize honestly that they're often not perfect. Being generous is the enemy of learning here.
+
 Criteria to weigh:
 
 1. **Is the trend genuinely established?** This is a *continuation* setup — the stock must already be in a proven Stage-2 (character change done, MAs stacked and rising). A "base" on a stock that hasn't turned is a [[character-change]] question, not this.
@@ -68,4 +80,4 @@ When you grade: is the trend real, is the base tightening, and is the entry on w
 
 The recent character-change charts that *also* show the first Stage-2 base are the cleanest BiB illustrations: `2012-11-15-NFLX-W-character-change-trevor` (CC → first base), `2023-05-15-CRWD-W-...` (quiet base on the MAs — a textbook tight-and-light base), `2023-03-15-DELL-W-...` (first Stage-2 confirmation base), `2023-01-15-BTCUSD-W-...` (repeating bases — catch the *next* one). Schmidt's own BiB writeups: see `2026-05-31-ONDS-W-buying-in-bases` (ma-compression) and the FCEL / NBIS / MP entries.
 
-See also: [[glossary#buying-in-bases]] (definition), Nick Schmidt's “Buying in Bases” writeup (nickschmidt.so) (deep method + pre-trade checklist), [[character-change]] (the birth-of-trend partner).
+See also: [[glossary#buying-in-bases]] (definition), Nick Schmidt’s “Buying in Bases” writeup (nickschmidt.so) (deep method + pre-trade checklist), [[character-change]] (the birth-of-trend partner), [[high-tight-flag]] (the rarer O'Neil continuation an over-called HTF is usually mistaking for a base — check the pole).
